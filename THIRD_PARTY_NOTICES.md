@@ -38,6 +38,13 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 ```
 
+## GamepadViewer.com
+
+- Component: GamepadViewer.com.
+- Source: https://gamepadviewer.com/
+- License: no project license was copied into this repository.
+- Use in this project: functional and workflow reference only. This project does not copy, vendor, or redistribute GamepadViewer.com source code, CSS, controller skins, or image assets. If future versions copy or adapt GamepadViewer.com code or assets, that material must be reviewed and licensed or removed before release.
+
 ## Phetri Input Overlays
 
 - Component: `Phetri-A/Phetri-input-overlays`.

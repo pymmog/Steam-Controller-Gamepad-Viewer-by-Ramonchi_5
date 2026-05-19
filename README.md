@@ -103,11 +103,3 @@ Upload those zips to GitHub Releases. Do not upload the normal `publish` folder 
 The original source code in this repository is MIT licensed. Third-party components, referenced projects, and Valve/Steam assets are documented in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 Important: the Steam Controller name, Steam name, Valve trademarks, and the controller artwork/assets remain Valve property. This project is unofficial and not endorsed by Valve.
-
-## Repository
-
-GitHub target:
-
-```text
-https://github.com/ramonchi5/Steam-Controller-Gamepad-Viewer-by-Ramonchi_5
-```
