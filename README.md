@@ -4,6 +4,25 @@ Local Steam Controller overlay for OBS. It runs a small local-only web server on
 
 This is a browser-source overlay for the first release. A native OBS plugin would be a better long-term version, but the local URL works offline once the app is running and does not require gamepadviewer.com or any internet service.
 
+## How It Runs
+
+The URL only works while `SteamControllerGamepadViewer.exe` is running. After restarting Windows, run `SteamControllerGamepadViewer.exe` again before OBS can load the local URL.
+
+Running it once does not install a background service, startup task, or OBS plugin. That is intentional for v1: simple and non-invasive. Later versions could add an optional tray app, installer, or native OBS plugin.
+
+The default release zip starts only when you explicitly run the exe. Optional release zips add helper scripts:
+
+- `start with OBS`: includes `Start Viewer with OBS.cmd`; use it instead of your normal OBS shortcut.
+- `start with Steam`: includes `Start Viewer with Steam.cmd`; use it instead of your normal Steam shortcut.
+- `start with OBS or Steam`: includes both launcher scripts.
+- `start with Windows`: includes install/uninstall scripts for a Windows Startup shortcut.
+
+The OBS/Steam helper scripts do not install hooks or background watchers. They simply start the viewer and then start OBS or Steam from the default install folders.
+
+## AI Disclosure
+
+This viewer was coded with help from OpenAI Codex. The project is human-directed and reviewed, but AI assistance was part of the implementation. If AI-assisted software is a deal-breaker for you, please use another viewer or OBS input overlay.
+
 ## Run
 
 ### Release build
@@ -16,14 +35,12 @@ This is a browser-source overlay for the first release. A native OBS plugin woul
 http://127.0.0.1:31337/?clean=1&title=0
 ```
 
-The v1 release zip only needs these files:
+The standard v1 release zip only needs these files:
 
 - `SteamControllerGamepadViewer.exe`
 - `README.md`
 - `LICENSE`
 - `THIRD_PARTY_NOTICES.md`
-
-The URL does not start the app by itself. The exe must be running first, then OBS can load the local URL.
 
 ### From source
 
@@ -58,7 +75,7 @@ The URL is local loopback, not a website. If the URL does not load, start the ap
 
 ## Controller Support
 
-The current target is Valve's Steam Controller. The app does not open Steam's controller tester window; it reads current state and redraws the overlay directly, so released buttons release on-screen too.
+The current target is Valve's Steam Controller. The app does not open Steam's controller tester window; it reads current state and redraws the overlay directly, so button releases are shown as releases too.
 
 Supported inputs:
 
@@ -70,7 +87,7 @@ SDL3 is loaded from the app folder first, then from the default Steam install fo
 
 If SDL3 cannot open the controller after a firmware update, the app falls back to fresh Valve HID reports when they are available. That keeps the overlay connected for Steam Controller firmware/device-id changes that still expose the same raw HID report shape.
 
-## Building A Release Zip
+## Building Release Zips
 
 From a source checkout:
 
@@ -78,11 +95,15 @@ From a source checkout:
 Build-Release.cmd v1.0.0
 ```
 
-The zip is created under `artifacts\release`. Upload that zip to GitHub Releases; do not upload the normal `publish` folder unless you specifically want a framework-dependent developer build.
+Release zips are created under `artifacts\release`:
 
-## AI Disclosure
+- `Steam Controller Viewer v1.0.0 win-x64.zip`
+- `Steam Controller Viewer v1.0.0 win-x64 (start with OBS).zip`
+- `Steam Controller Viewer v1.0.0 win-x64 (start with Steam).zip`
+- `Steam Controller Viewer v1.0.0 win-x64 (start with OBS or Steam).zip`
+- `Steam Controller Viewer v1.0.0 win-x64 (start with Windows).zip`
 
-This viewer was coded with help from OpenAI Codex. The project is human-directed and reviewed, but AI assistance was part of the implementation. If AI-assisted software is a deal-breaker for you, please use another viewer or OBS input overlay.
+Upload those zips to GitHub Releases. Do not upload the normal `publish` folder unless you specifically want a framework-dependent developer build.
 
 ## License And Notices
 
