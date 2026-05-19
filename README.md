@@ -8,16 +8,12 @@ This is a browser-source overlay for the first release. A native OBS plugin woul
 
 The URL only works while `SteamControllerGamepadViewer.exe` is running. After restarting Windows, run `SteamControllerGamepadViewer.exe` again before OBS can load the local URL.
 
-Running it once does not install a background service, startup task, or OBS plugin. That is intentional for v1: simple and non-invasive. Later versions could add an optional tray app, installer, or native OBS plugin.
+Running the portable version once does not install a background service, startup task, or OBS plugin. That is intentional for v1: simple and non-invasive. Later versions could add an optional tray app, installer, or native OBS plugin.
 
-The default release zip starts only when you explicitly run the exe. Optional release zips add helper scripts:
+There are two v1 release options:
 
-- `start with OBS`: includes `Start Viewer with OBS.cmd`; use it instead of your normal OBS shortcut.
-- `start with Steam`: includes `Start Viewer with Steam.cmd`; use it instead of your normal Steam shortcut.
-- `start with OBS or Steam`: includes both launcher scripts.
-- `start with Windows`: includes install/uninstall scripts for a Windows Startup shortcut.
-
-The OBS/Steam helper scripts do not install hooks or background watchers. They simply start the viewer and then start OBS or Steam from the default install folders.
+- Portable: starts only when you explicitly run `SteamControllerGamepadViewer.exe`.
+- Start with Windows: includes install/uninstall scripts for a Windows Startup shortcut.
 
 ## AI Disclosure
 
@@ -98,9 +94,6 @@ Build-Release.cmd v1.0.0
 Release zips are created under `artifacts\release`:
 
 - `Steam Controller Viewer v1.0.0 win-x64.zip`
-- `Steam Controller Viewer v1.0.0 win-x64 (start with OBS).zip`
-- `Steam Controller Viewer v1.0.0 win-x64 (start with Steam).zip`
-- `Steam Controller Viewer v1.0.0 win-x64 (start with OBS or Steam).zip`
 - `Steam Controller Viewer v1.0.0 win-x64 (start with Windows).zip`
 
 Upload those zips to GitHub Releases. Do not upload the normal `publish` folder unless you specifically want a framework-dependent developer build.

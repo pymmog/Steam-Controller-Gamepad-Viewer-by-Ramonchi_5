@@ -17,15 +17,6 @@ call :CleanPublish "%BASE_OUT%"
 call :ZipFolder "%BASE_OUT%" "%RELEASE_ROOT%\%BASE_NAME%.zip"
 if errorlevel 1 exit /b %errorlevel%
 
-call :MakeVariant "%BASE_NAME% (start with OBS)" "%ROOT%release-assets\Start Viewer with OBS.cmd"
-if errorlevel 1 exit /b %errorlevel%
-
-call :MakeVariant "%BASE_NAME% (start with Steam)" "%ROOT%release-assets\Start Viewer with Steam.cmd"
-if errorlevel 1 exit /b %errorlevel%
-
-call :MakeVariant "%BASE_NAME% (start with OBS or Steam)" "%ROOT%release-assets\Start Viewer with OBS.cmd" "%ROOT%release-assets\Start Viewer with Steam.cmd"
-if errorlevel 1 exit /b %errorlevel%
-
 call :MakeVariant "%BASE_NAME% (start with Windows)" "%ROOT%release-assets\Install Start With Windows.cmd" "%ROOT%release-assets\Uninstall Start With Windows.cmd"
 if errorlevel 1 exit /b %errorlevel%
 
