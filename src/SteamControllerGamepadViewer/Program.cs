@@ -6,10 +6,11 @@ using SteamControllerGamepadViewer.State;
 
 SdlNative.Configure(args);
 
+var physicalWebRoot = WebRootResolver.ResolvePhysical();
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
     Args = args,
-    WebRootPath = WebRootResolver.Resolve(),
+    WebRootPath = physicalWebRoot ?? AppContext.BaseDirectory,
 });
 
 builder.Logging.ClearProviders();
@@ -28,8 +29,11 @@ builder.Services.AddHostedService<SdlControllerService>();
 
 var app = builder.Build();
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
+if (physicalWebRoot is not null)
+{
+    app.UseDefaultFiles();
+    app.UseStaticFiles();
+}
 
 app.MapGet("/api/state", (ControllerStateHub hub) => Results.Json(hub.Current, AppJson.Options));
 
@@ -85,7 +89,7 @@ internal static class AppJson
 
 internal static class WebRootResolver
 {
-    public static string Resolve()
+    public static string? ResolvePhysical()
     {
         var candidates = new[]
         {
@@ -94,7 +98,7 @@ internal static class WebRootResolver
             Path.Combine(AppContext.BaseDirectory, "wwwroot"),
         };
 
-        return candidates.FirstOrDefault(Directory.Exists) ?? candidates[0];
+        return candidates.FirstOrDefault(Directory.Exists);
     }
 }
 
