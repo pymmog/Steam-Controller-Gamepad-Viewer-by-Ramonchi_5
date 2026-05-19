@@ -8,11 +8,11 @@ This is a browser-source overlay for the first release. A native OBS plugin woul
 
 The URL only works while `SteamControllerGamepadViewer.exe` is running. After restarting Windows, run `SteamControllerGamepadViewer.exe` again before OBS can load the local URL.
 
-Running the portable version once does not install a background service, startup task, or OBS plugin. That is intentional for v1: simple and non-invasive. Later versions could add an optional tray app, installer, or native OBS plugin.
+The portable release starts only when you explicitly run `SteamControllerGamepadViewer.exe`. If you want to avoid clicking the exe every time, use the `Start with Windows` release instead.
 
 There are two v1 release options:
 
-- Portable: starts only when you explicitly run `SteamControllerGamepadViewer.exe`.
+- Portable: run `SteamControllerGamepadViewer.exe` whenever you want the OBS URL to work.
 - Start with Windows: includes install/uninstall scripts for a Windows Startup shortcut.
 
 ## AI Disclosure
