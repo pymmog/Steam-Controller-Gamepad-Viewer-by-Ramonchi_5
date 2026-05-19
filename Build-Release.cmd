@@ -16,6 +16,7 @@ if errorlevel 1 exit /b %errorlevel%
 if exist "%OUT%\wwwroot" rmdir /s /q "%OUT%\wwwroot"
 del /q "%OUT%\*.staticwebassets.*.json" 2>nul
 del /q "%OUT%\web.config" 2>nul
+del /q "%OUT%\Launch-Viewer.vbs" 2>nul
 
 powershell -NoProfile -ExecutionPolicy Bypass -Command "if (Test-Path -LiteralPath $env:ZIP) { Remove-Item -LiteralPath $env:ZIP -Force }; Compress-Archive -Path (Join-Path $env:OUT '*') -DestinationPath $env:ZIP -Force"
 if errorlevel 1 exit /b %errorlevel%

@@ -14,6 +14,5 @@
     <None Include="..\..\LICENSE" Link="LICENSE" CopyToPublishDirectory="Always" />
     <None Include="..\..\README.md" Link="README.md" CopyToPublishDirectory="Always" />
     <None Include="..\..\THIRD_PARTY_NOTICES.md" Link="THIRD_PARTY_NOTICES.md" CopyToPublishDirectory="Always" />
-    <None Include="..\..\Launch-Viewer.vbs" Link="Launch-Viewer.vbs" CopyToPublishDirectory="Always" />
   </ItemGroup>
 </Project>

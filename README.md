@@ -16,15 +16,12 @@ This is a browser-source overlay for the first release. A native OBS plugin woul
 http://127.0.0.1:31337/?clean=1&title=0
 ```
 
-`Launch-Viewer.vbs` is optional; it starts the same exe from the release folder.
-
 The v1 release zip only needs these files:
 
 - `SteamControllerGamepadViewer.exe`
 - `README.md`
 - `LICENSE`
 - `THIRD_PARTY_NOTICES.md`
-- `Launch-Viewer.vbs` (optional convenience launcher)
 
 The URL does not start the app by itself. The exe must be running first, then OBS can load the local URL.
 
