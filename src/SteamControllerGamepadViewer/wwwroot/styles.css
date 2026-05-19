@@ -1,0 +1,327 @@
+:root {
+  color-scheme: dark;
+  --active: #25a7ff;
+  --active-strong: #2aa8ff;
+  --line: rgba(242, 248, 255, 0.96);
+  --status: rgba(12, 18, 26, 0.76);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body.solid {
+  background: #080d13;
+}
+
+.viewer {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-width: 320px;
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  padding: 1.5vmin;
+}
+
+.title {
+  position: absolute;
+  top: 4.6%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--line);
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 700;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.62);
+  white-space: nowrap;
+}
+
+body.hide-title .title {
+  display: none;
+}
+
+.controller {
+  width: min(96vw, calc(96vh * 1.26));
+  height: auto;
+  max-height: 96vh;
+  overflow: visible;
+}
+
+.controller-art {
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.control {
+  fill: var(--active);
+  stroke: none;
+  opacity: 0;
+  transition: opacity 65ms ease, filter 65ms ease;
+}
+
+.control.active {
+  opacity: calc(0.78 + (var(--press) * 0.18));
+  stroke: rgba(214, 242, 255, 0.72);
+  stroke-width: 0.85;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 5px rgba(37, 167, 255, 0.52)) drop-shadow(0 0 2px rgba(214, 242, 255, 0.42));
+}
+
+.preview-all .control {
+  opacity: 0.92;
+  filter: url(#activeGlow);
+}
+
+.dpad-part.active {
+  opacity: 1;
+  stroke: none;
+  stroke-width: 0;
+  filter: drop-shadow(0 0 4px rgba(37, 167, 255, 0.62)) drop-shadow(0 0 2px rgba(214, 242, 255, 0.34));
+}
+
+.dpad-outline-glow {
+  fill: none;
+  stroke: rgba(214, 242, 255, 0.82);
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dpad-outline-glow.active {
+  opacity: 0.95;
+  filter: drop-shadow(0 0 5px rgba(37, 167, 255, 0.68)) drop-shadow(0 0 2px rgba(214, 242, 255, 0.48));
+}
+
+.dpad-up {
+  fill: url(#dpadUpFill);
+}
+
+.dpad-right {
+  fill: url(#dpadRightFill);
+}
+
+.dpad-down {
+  fill: url(#dpadDownFill);
+}
+
+.dpad-left {
+  fill: url(#dpadLeftFill);
+}
+
+.stick-press-ring {
+  fill: none;
+  stroke: var(--active);
+  stroke-width: 2.2;
+}
+
+.stick-press-ring.active {
+  fill: rgba(37, 167, 255, 0.2);
+  stroke: rgba(37, 167, 255, 0.95);
+  stroke-width: 2.2;
+  opacity: 0.92;
+  filter: drop-shadow(0 0 7px rgba(37, 167, 255, 0.72)) drop-shadow(0 0 2px rgba(214, 242, 255, 0.5));
+}
+
+.bumper-control.active {
+  stroke: rgba(214, 242, 255, 0.72);
+  stroke-width: 0.85;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 5px rgba(37, 167, 255, 0.52)) drop-shadow(0 0 2px rgba(214, 242, 255, 0.42));
+  opacity: 1;
+}
+
+.back-button {
+  fill: rgba(205, 209, 213, 0.68);
+  stroke: rgba(240, 244, 248, 0.42);
+  stroke-width: 0.8;
+  opacity: 0.33;
+  filter: drop-shadow(0 0 4px rgba(205, 209, 213, 0.34));
+}
+
+.back-button.active {
+  fill: var(--active);
+  stroke: rgba(214, 242, 255, 0.72);
+  opacity: calc(0.82 + (var(--press) * 0.16));
+  filter: drop-shadow(0 0 5px rgba(37, 167, 255, 0.52)) drop-shadow(0 0 2px rgba(214, 242, 255, 0.42));
+}
+
+.preview-all .bumper-control,
+.preview-all .back-button {
+  opacity: 1;
+}
+
+.trigger-control {
+  fill: rgba(37, 167, 255, 0.9);
+  stroke: rgba(242, 248, 255, 0.96);
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+}
+
+.trigger-fill.active {
+  opacity: 0.92;
+  stroke: rgba(214, 242, 255, 0.72);
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 5px rgba(37, 167, 255, 0.52)) drop-shadow(0 0 2px rgba(214, 242, 255, 0.42));
+}
+
+.preview-all .trigger-control {
+  opacity: 0.92;
+  filter: url(#activeGlow);
+}
+
+.stick-center-dot,
+.stick-position,
+.pad-dot,
+.pad-ring,
+.pad-touch-outline {
+  opacity: 0;
+  transition: opacity 55ms ease, transform 45ms linear, cx 45ms linear, cy 45ms linear, r 55ms ease;
+}
+
+.stick-center-dot {
+  fill: rgba(255, 255, 255, 0.78);
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.52));
+  opacity: 0.88;
+}
+
+.stick-position {
+  fill: rgba(205, 209, 213, 0.9);
+  stroke: rgba(240, 244, 248, 0.55);
+  stroke-width: 0.8;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.34));
+  opacity: 0.95;
+}
+
+.stick-position.moved {
+  fill: var(--active);
+  stroke: rgba(214, 242, 255, 0.96);
+  stroke-width: 1.35;
+  filter: drop-shadow(0 0 6px rgba(37, 167, 255, 0.7));
+  opacity: 0.96;
+}
+
+.stick-position.pressed {
+  stroke: rgba(214, 242, 255, 0.96);
+  stroke-width: 1.6;
+  filter: drop-shadow(0 0 7px rgba(37, 167, 255, 0.78)) drop-shadow(0 0 2px rgba(214, 242, 255, 0.5));
+}
+
+.pad-dot {
+  fill: rgba(255, 255, 255, 0.94);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
+}
+
+.pad-ring {
+  fill: transparent;
+  stroke: none;
+  stroke-width: 0;
+  filter: none;
+}
+
+.pad-marker.pressed .pad-ring {
+  fill: rgba(37, 167, 255, 0.82);
+  stroke: rgba(214, 242, 255, 0.38);
+  stroke-width: 0.9;
+  filter: drop-shadow(0 0 7px rgba(37, 167, 255, 0.86)) drop-shadow(0 0 2px rgba(214, 242, 255, 0.42));
+}
+
+.pad-marker.pressed .pad-dot {
+  fill: rgba(37, 167, 255, 0.96);
+  filter: drop-shadow(0 0 6px rgba(37, 167, 255, 0.86)) drop-shadow(0 0 2px rgba(214, 242, 255, 0.5));
+}
+
+.pad-touch-outline {
+  fill: none;
+  stroke: rgba(37, 167, 255, 0.9);
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 4px rgba(37, 167, 255, 0.7));
+}
+
+.pad-touch-outline.inner {
+  stroke-width: 0.9;
+  opacity: 0;
+}
+
+.pad-marker.touched .pad-dot,
+.pad-marker.touched .pad-touch-outline {
+  opacity: 1;
+}
+
+.pad-marker.pressed .pad-ring {
+  opacity: 1;
+}
+
+.pad-marker.touched .pad-touch-outline.inner {
+  opacity: 0.72;
+}
+
+.preview-all .pad-dot,
+.preview-all .pad-ring,
+.preview-all .pad-touch-outline {
+  opacity: 1;
+}
+
+.preview-all .pad-touch-outline.inner {
+  opacity: 0.72;
+}
+
+.status {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  max-width: min(720px, calc(100vw - 36px));
+  padding: 9px 12px;
+  border-radius: 6px;
+  background: var(--status);
+  color: rgba(242, 248, 255, 0.88);
+  font-size: 14px;
+  line-height: 1.35;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+body.debug .status,
+body.disconnected .status {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+body.clean .status {
+  display: none;
+}
+
+body.disconnected .controller {
+  opacity: 0.55;
+}
+
+body.solid::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: #080d13;
+  z-index: -1;
+}
+
+@media (max-width: 720px) {
+  .title {
+    font-size: 22px;
+  }
+
+  .status {
+    font-size: 12px;
+  }
+}

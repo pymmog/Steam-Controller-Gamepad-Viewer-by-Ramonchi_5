@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Steam Controller Gamepad Viewer</title>
+  <link rel="stylesheet" href="/styles.css?v=20260519aa">
+</head>
+<body>
+  <main class="viewer" aria-label="Steam Controller input overlay">
+    <div class="title" data-title>Steam Controller</div>
+    <svg class="controller" viewBox="0 -42 456 362" role="img" aria-label="Steam Controller">
+      <defs>
+        <filter id="activeGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="1.8" result="blur"/>
+          <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.12 0 0 0 0 0.62 0 0 0 0 1 0 0 0 0.72 0"/>
+          <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        <clipPath id="dpadClip">
+          <path d="M74.0048 64.0078C76.0048 64.0078 77.0049 63.0078 77.0048 61.0078L77.0049 47.0078C77.0049 45.2084 77.0049 44.0078 80.0048 43.0078C83.0048 42.0078 85.0048 42.0078 88.0048 42.0078L89.0037 42.0078C92.0037 42.0078 94.0037 42.0078 97.0037 43.0078C100.004 44.0078 100.004 45.2084 100.004 47.0078L100.004 61.0078C100.004 63.0078 101.004 64.0078 103.004 64.0078L117.004 64.0078C118.803 64.0078 120.004 64.0078 121.004 67.0078C122.004 70.0078 122.004 72.0078 122.004 75.0078L122.004 76.0078C122.004 79.0078 122.004 81.0078 121.004 84.0078C120.004 87.0078 118.803 87.0078 117.004 87.0078L103.004 87.0078C101.004 87.0078 100.004 88.0078 100.004 90.0078L100.004 104.008C100.004 105.807 100.004 107.008 97.0037 108.008C94.0037 109.008 92.0037 109.008 89.0037 109.008H88.0037C85.0037 109.008 83.0037 109.008 80.0037 108.008C77.0037 107.008 77.0037 105.807 77.0037 104.008L77.0037 90.0078C77.0037 88.0078 76.0037 87.0078 74.0037 87.0078L60.0037 87.0078C58.2042 87.0078 57.0037 87.0078 56.0037 84.0078C55.0037 81.0078 55.0037 79.0078 55.0037 76.0078L55.0037 75.0078C55.0037 72.0078 55.0037 70.0078 56.0037 67.0078C57.0037 64.0078 58.2042 64.0078 60.0037 64.0078L74.0037 64.0078C76.0037 64.0078 77.0037 63.0078 77.0037 61.0078"/>
+        </clipPath>
+        <linearGradient id="dpadUpFill" x1="88.5" y1="42" x2="88.5" y2="83" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#25a7ff" stop-opacity="1"/>
+          <stop offset="0.03" stop-color="#25a7ff" stop-opacity="1"/>
+          <stop offset="0.24" stop-color="#25a7ff" stop-opacity="0.72"/>
+          <stop offset="0.58" stop-color="#25a7ff" stop-opacity="0.24"/>
+          <stop offset="1" stop-color="#25a7ff" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="dpadRightFill" x1="122" y1="75.5" x2="81" y2="75.5" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#25a7ff" stop-opacity="1"/>
+          <stop offset="0.03" stop-color="#25a7ff" stop-opacity="1"/>
+          <stop offset="0.24" stop-color="#25a7ff" stop-opacity="0.72"/>
+          <stop offset="0.58" stop-color="#25a7ff" stop-opacity="0.24"/>
+          <stop offset="1" stop-color="#25a7ff" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="dpadDownFill" x1="88.5" y1="109" x2="88.5" y2="68" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#25a7ff" stop-opacity="1"/>
+          <stop offset="0.03" stop-color="#25a7ff" stop-opacity="1"/>
+          <stop offset="0.24" stop-color="#25a7ff" stop-opacity="0.72"/>
+          <stop offset="0.58" stop-color="#25a7ff" stop-opacity="0.24"/>
+          <stop offset="1" stop-color="#25a7ff" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="dpadLeftFill" x1="55" y1="75.5" x2="96" y2="75.5" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#25a7ff" stop-opacity="1"/>
+          <stop offset="0.03" stop-color="#25a7ff" stop-opacity="1"/>
+          <stop offset="0.24" stop-color="#25a7ff" stop-opacity="0.72"/>
+          <stop offset="0.58" stop-color="#25a7ff" stop-opacity="0.24"/>
+          <stop offset="1" stop-color="#25a7ff" stop-opacity="0"/>
+        </linearGradient>
+        <radialGradient id="dpadOpacityFade" cx="88.504" cy="75.508" r="24" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#000"/>
+          <stop offset="0.07" stop-color="#000"/>
+          <stop offset="0.28" stop-color="#444"/>
+          <stop offset="0.58" stop-color="#888"/>
+          <stop offset="1" stop-color="#fff"/>
+        </radialGradient>
+        <linearGradient id="triggerDepthFade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#000"/>
+          <stop offset="1" stop-color="#fff"/>
+        </linearGradient>
+        <mask id="dpadOpacityMask" maskUnits="userSpaceOnUse" x="54" y="41" width="70" height="70">
+          <rect x="54" y="41" width="70" height="70" fill="#fff"/>
+          <circle cx="88.504" cy="75.508" r="24" fill="url(#dpadOpacityFade)"/>
+        </mask>
+        <clipPath id="leftPadClip">
+          <rect x="103.296" y="139.723" width="93" height="93" rx="16"/>
+        </clipPath>
+        <clipPath id="rightPadClip">
+          <rect x="-0.81371" y="1.15667" width="93" height="93" rx="16"/>
+        </clipPath>
+        <mask id="backButtonTrackpadMask" maskUnits="userSpaceOnUse" x="0" y="-42" width="456" height="362">
+          <rect x="0" y="-42" width="456" height="362" fill="#fff"/>
+          <rect x="103.296" y="139.723" width="93" height="93" rx="16" transform="rotate(9.87378 103.296 139.723)" fill="#000"/>
+          <rect x="-0.81371" y="1.15667" width="93" height="93" rx="16" transform="matrix(-0.985188 0.171478 0.171478 0.985188 350.965 138.723)" fill="#000"/>
+        </mask>
+        <mask id="triggerOcclusionMask" maskUnits="userSpaceOnUse" x="0" y="-42" width="456" height="362">
+          <rect x="0" y="-42" width="456" height="362" fill="#fff"/>
+          <path d="M384.95 316.346C387.534 317.113 389.109 317.041 391.801 317.178C406.386 317.919 421.837 312.708 432.331 302.458C457.84 277.541 454.505 233.68 450.551 201.518C445.672 161.824 434.279 122.749 423.101 84.5278C419.828 73.3342 417.674 61.6952 412.621 51.0978C408.414 42.2728 401.94 34.0273 394.341 27.8778C388.861 23.4426 382.132 20.8841 375.461 18.8478C356.926 13.1892 337.122 12.5528 317.901 11.6378C287.84 10.2066 257.723 10.0237 227.634 10.0078C197.545 10.0237 167.426 10.2066 137.364 11.6378C118.143 12.5528 98.3394 13.1892 79.804 18.8478C73.1335 20.8841 66.4044 23.4426 60.924 27.8778C53.3251 34.0273 46.8514 42.2728 42.644 51.0978C37.5915 61.6952 35.4374 73.3342 32.164 84.5278C20.9865 122.749 9.59354 161.824 4.71402 201.518C0.760376 233.68 -2.5752 277.541 22.934 302.458C33.4278 312.708 48.8787 317.919 63.464 317.178C66.1557 317.041 67.7314 317.113 70.315 316.346C76.0378 314.646 80.7996 310.482 84.454 305.908C88.6574 300.646 90.6228 294.089 93.854 288.258C98.4137 280.029 103.732 271.366 111.854 266.258C117.01 263.015 122.674 261.614 128.714 261.528C161.965 261.053 194.3 260.476 227.633 260.309C260.965 260.476 293.3 261.053 326.551 261.528C332.592 261.614 338.255 263.015 343.411 266.258C351.533 271.366 356.851 280.029 361.411 288.258C364.642 294.089 366.608 300.646 370.811 305.908C374.466 310.482 379.227 314.646 384.95 316.346Z" fill="#000"/>
+          <path d="M394.341 27.8778C388.861 23.4426 382.132 20.8841 375.461 18.8478C359.516 13.9799 342.632 12.8287 325.988 12.0195C326.058 11.5995 326.196 10.8379 326.266 10.4179C326.606 8.77624 327.409 7.19377 328.556 5.96782C329.7 4.72122 331.19 3.80654 332.796 3.27782C335.04 2.49815 337.493 2.32237 339.846 2.16782C348.531 1.64 357.39 2.38451 365.917 4.0178C373.556 5.19303 381.667 8.00852 387.905 12.7579C391.361 15.4075 394.374 18.7736 396.305 22.6979C397.225 24.5479 397.905 26.5179 398.355 28.5379L398.985 32.0308C397.494 30.5628 395.943 29.1738 394.341 27.8778Z" fill="#000"/>
+          <path d="M60.9238 27.8778C66.4042 23.4426 73.1334 20.8841 79.8038 18.8478C95.749 13.9799 112.633 12.8287 129.277 12.0195C129.207 11.5995 129.07 10.8379 129 10.4179C128.659 8.77624 127.856 7.19377 126.71 5.96782C125.565 4.72122 124.075 3.80654 122.47 3.27782C120.225 2.49815 117.772 2.32237 115.42 2.16782C106.735 1.64 97.8756 2.38451 89.3481 4.0178C81.7091 5.19303 73.5981 8.00852 67.3601 12.7579C63.9041 15.4075 60.8911 18.7736 58.9601 22.6979C58.0401 24.5479 57.3601 26.5179 56.9101 28.5379L56.2801 32.0308C57.7709 30.5628 59.3224 29.1738 60.9238 27.8778Z" fill="#000"/>
+        </mask>
+        <mask id="rightTriggerDepthMask" maskUnits="userSpaceOnUse" x="300" y="-42" width="100" height="84">
+          <rect x="300" y="-42" width="100" height="84" fill="#000"/>
+          <rect data-trigger-fade-rect="rt" x="300" y="38" width="100" height="0" fill="url(#triggerDepthFade)"/>
+          <rect data-trigger-fill-rect="rt" x="300" y="38" width="100" height="0" fill="#fff"/>
+        </mask>
+        <mask id="leftTriggerDepthMask" maskUnits="userSpaceOnUse" x="56" y="-42" width="100" height="84">
+          <rect x="56" y="-42" width="100" height="84" fill="#000"/>
+          <rect data-trigger-fade-rect="lt" x="56" y="38" width="100" height="0" fill="url(#triggerDepthFade)"/>
+          <rect data-trigger-fill-rect="lt" x="56" y="38" width="100" height="0" fill="#fff"/>
+        </mask>
+      </defs>
+
+      <g class="back-controls" mask="url(#backButtonTrackpadMask)">
+        <ellipse class="control back-button grip-button grip-upper" data-control="rg2" cx="367" cy="180.5" rx="14.4" ry="20.8" transform="rotate(-11 367 180.5)"/>
+        <ellipse class="control back-button grip-button grip-lower" data-control="rg1" cx="375" cy="234.5" rx="14.4" ry="20.8" transform="rotate(-11 375 234.5)"/>
+        <ellipse class="control back-button grip-button grip-upper" data-control="lg2" cx="88" cy="180.5" rx="14.4" ry="20.8" transform="rotate(11 88 180.5)"/>
+        <ellipse class="control back-button grip-button grip-lower" data-control="lg1" cx="80" cy="234.5" rx="14.4" ry="20.8" transform="rotate(11 80 234.5)"/>
+      </g>
+
+      <g class="front-fills">
+        <path class="control top-control bumper-control" data-control="rb" d="M394.341 27.8778C388.861 23.4426 382.132 20.8841 375.461 18.8478C359.516 13.9799 342.632 12.8287 325.988 12.0195C326.058 11.5995 326.196 10.8379 326.266 10.4179C326.606 8.77624 327.409 7.19377 328.556 5.96782C329.7 4.72122 331.19 3.80654 332.796 3.27782C335.04 2.49815 337.493 2.32237 339.846 2.16782C348.531 1.64 357.39 2.38451 365.917 4.0178C373.556 5.19303 381.667 8.00852 387.905 12.7579C391.361 15.4075 394.374 18.7736 396.305 22.6979C397.225 24.5479 397.905 26.5179 398.355 28.5379L398.985 32.0308C397.494 30.5628 395.943 29.1738 394.341 27.8778Z"/>
+        <path class="control top-control bumper-control" data-control="lb" d="M60.9238 27.8778C66.4042 23.4426 73.1334 20.8841 79.8038 18.8478C95.749 13.9799 112.633 12.8287 129.277 12.0195C129.207 11.5995 129.07 10.8379 129 10.4179C128.659 8.77624 127.856 7.19377 126.71 5.96782C125.565 4.72122 124.075 3.80654 122.47 3.27782C120.225 2.49815 117.772 2.32237 115.42 2.16782C106.735 1.64 97.8756 2.38451 89.3481 4.0178C81.7091 5.19303 73.5981 8.00852 67.3601 12.7579C63.9041 15.4075 60.8911 18.7736 58.9601 22.6979C58.0401 24.5479 57.3601 26.5179 56.9101 28.5379L56.2801 32.0308C57.7709 30.5628 59.3224 29.1738 60.9238 27.8778Z"/>
+        <g class="trigger-stack" mask="url(#triggerOcclusionMask)">
+          <path class="control top-control trigger-control trigger-fill" data-control="rt" mask="url(#rightTriggerDepthMask)" d="M312.4 38C314.6 10 321.2 -21 336.6 -34C345.4 -41 358.6 -41 367.4 -34C382.8 -21 389.4 10 391.6 38C379.5 35 366.3 34 352 34C336.6 34 324.5 35 312.4 38Z"/>
+          <path class="control top-control trigger-control trigger-fill" data-control="lt" mask="url(#leftTriggerDepthMask)" d="M143.6 38C141.4 10 134.8 -21 119.4 -34C110.6 -41 97.4 -41 88.6 -34C73.2 -21 66.6 10 64.4 38C76.5 35 89.7 34 104 34C119.4 34 131.5 35 143.6 38Z"/>
+        </g>
+        <path class="control dpad-part dpad-up" data-control="dpad-up" clip-path="url(#dpadClip)" mask="url(#dpadOpacityMask)" d="M77.004 42.008H100.004V64.008L88.504 75.508L77.004 64.008V42.008Z"/>
+        <path class="control dpad-part dpad-right" data-control="dpad-right" clip-path="url(#dpadClip)" mask="url(#dpadOpacityMask)" d="M122.004 64.008V87.008H100.004L88.504 75.508L100.004 64.008H122.004Z"/>
+        <path class="control dpad-part dpad-down" data-control="dpad-down" clip-path="url(#dpadClip)" mask="url(#dpadOpacityMask)" d="M77.004 109.008V87.008L88.504 75.508L100.004 87.008V109.008H77.004Z"/>
+        <path class="control dpad-part dpad-left" data-control="dpad-left" clip-path="url(#dpadClip)" mask="url(#dpadOpacityMask)" d="M55.004 64.008H77.004L88.504 75.508L77.004 87.008H55.004V64.008Z"/>
+        <path class="control dpad-outline-glow" data-control="dpad-outline" d="M74.0048 64.0078C76.0048 64.0078 77.0049 63.0078 77.0048 61.0078L77.0049 47.0078C77.0049 45.2084 77.0049 44.0078 80.0048 43.0078C83.0048 42.0078 85.0048 42.0078 88.0048 42.0078L89.0037 42.0078C92.0037 42.0078 94.0037 42.0078 97.0037 43.0078C100.004 44.0078 100.004 45.2084 100.004 47.0078L100.004 61.0078C100.004 63.0078 101.004 64.0078 103.004 64.0078L117.004 64.0078C118.803 64.0078 120.004 64.0078 121.004 67.0078C122.004 70.0078 122.004 72.0078 122.004 75.0078L122.004 76.0078C122.004 79.0078 122.004 81.0078 121.004 84.0078C120.004 87.0078 118.803 87.0078 117.004 87.0078L103.004 87.0078C101.004 87.0078 100.004 88.0078 100.004 90.0078L100.004 104.008C100.004 105.807 100.004 107.008 97.0037 108.008C94.0037 109.008 92.0037 109.008 89.0037 109.008H88.0037C85.0037 109.008 83.0037 109.008 80.0037 108.008C77.0037 107.008 77.0037 105.807 77.0037 104.008L77.0037 90.0078C77.0037 88.0078 76.0037 87.0078 74.0037 87.0078L60.0037 87.0078C58.2042 87.0078 57.0037 87.0078 56.0037 84.0078C55.0037 81.0078 55.0037 79.0078 55.0037 76.0078L55.0037 75.0078C55.0037 72.0078 55.0037 70.0078 56.0037 67.0078C57.0037 64.0078 58.2042 64.0078 60.0037 64.0078L74.0037 64.0078C76.0037 64.0078 77.0037 63.0078 77.0037 61.0078"/>
+        <circle class="control stick-press-ring" data-control="left-stick-press" cx="162.133" cy="108.758" r="33.2"/>
+        <circle class="control stick-press-ring" data-control="right-stick-press" cx="293.133" cy="108.758" r="33.2"/>
+        <circle class="control" data-control="y" cx="367.133" cy="49.5078" r="13.5"/>
+        <circle class="control" data-control="x" cx="341.133" cy="76.0078" r="13.5"/>
+        <circle class="control" data-control="b" cx="393.133" cy="76.0078" r="13.5"/>
+        <circle class="control" data-control="a" cx="367.133" cy="101.508" r="13.5"/>
+        <path class="control" data-control="view" d="M139.217 37.5878H155.525C158.835 37.6078 161.556 40.3077 161.556 43.6177C161.556 46.9377 158.886 49.6277 155.566 49.6477L139.217 49.6478C135.887 49.6478 133.187 46.9478 133.187 43.6178C133.187 40.2878 135.887 37.5878 139.217 37.5878Z"/>
+        <path class="control" data-control="menu" d="M299.741 37.5878H316.049C319.359 37.6078 322.08 40.3077 322.08 43.6177C322.08 46.9377 319.41 49.6277 316.09 49.6477L299.741 49.6478C296.411 49.6478 293.711 46.9478 293.711 43.6178C293.711 40.2878 296.411 37.5878 299.741 37.5878Z"/>
+        <circle class="control" data-control="steam" cx="227.5" cy="76" r="14"/>
+        <path class="control" data-control="touch-click" d="M245.444 194.708C245.444 198.258 242.564 201.138 239.014 201.138H216.254C212.704 201.138 209.824 198.258 209.824 194.708C209.824 191.158 212.704 188.278 216.254 188.278H239.014C242.564 188.278 245.444 191.158 245.444 194.708Z"/>
+      </g>
+
+      <image class="controller-art" href="/assets/controller_config_controller_triton.svg?v=20260519aa" x="0" y="0" width="456" height="320"/>
+
+      <g class="live-markers">
+        <circle class="stick-center-dot" cx="162.133" cy="108.758" r="4.5"/>
+        <circle class="stick-center-dot" cx="293.133" cy="108.758" r="4.5"/>
+        <circle class="stick-position" data-stick-dot="left" cx="162.133" cy="108.758" r="14.49"/>
+        <circle class="stick-position" data-stick-dot="right" cx="293.133" cy="108.758" r="14.49"/>
+        <g class="pad-marker" data-pad="left" transform="rotate(9.87378 103.296 139.723)" clip-path="url(#leftPadClip)">
+          <rect class="pad-touch-outline" x="103.296" y="139.723" width="93" height="93" rx="16"/>
+          <rect class="pad-touch-outline inner" x="107.296" y="143.723" width="85" height="85" rx="13"/>
+          <circle class="pad-ring" data-pad-ring="left" cx="149.796" cy="186.223" r="16"/>
+          <circle class="pad-dot" data-pad-dot="left" cx="149.796" cy="186.223" r="7"/>
+        </g>
+        <g class="pad-marker" data-pad="right" transform="matrix(-0.985188 0.171478 0.171478 0.985188 350.965 138.723)" clip-path="url(#rightPadClip)">
+          <rect class="pad-touch-outline" x="-0.81371" y="1.15667" width="93" height="93" rx="16"/>
+          <rect class="pad-touch-outline inner" x="3.18629" y="5.15667" width="85" height="85" rx="13"/>
+          <circle class="pad-ring" data-pad-ring="right" cx="45.686" cy="47.657" r="16"/>
+          <circle class="pad-dot" data-pad-dot="right" cx="45.686" cy="47.657" r="7"/>
+        </g>
+      </g>
+    </svg>
+    <div class="status" data-status>Starting</div>
+  </main>
+  <script src="/app.js?v=20260519aa"></script>
+</body>
+</html>
