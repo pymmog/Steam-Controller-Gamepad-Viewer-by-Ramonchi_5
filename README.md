@@ -6,14 +6,16 @@ This is a browser-source overlay for the first release. A native OBS plugin woul
 
 ## How It Runs
 
-The URL only works while `SteamControllerGamepadViewer.exe` is running. After restarting Windows, run `SteamControllerGamepadViewer.exe` again before OBS can load the local URL.
+The URL only works while the app is running. After restarting your system, launch the app again before OBS can load the local URL.
 
-The portable release starts only when you explicitly run `SteamControllerGamepadViewer.exe`. If you want to avoid clicking the exe every time, use the `Start with Windows` release instead.
+**Windows:** The portable release starts only when you explicitly run `SteamControllerGamepadViewer.exe`. If you want to avoid clicking the exe every time, use the `Start with Windows` release instead.
 
-There are two v1 release options:
+There are two Windows v1 release options:
 
 - Portable: run `SteamControllerGamepadViewer.exe` whenever you want the OBS URL to work.
 - Start with Windows: includes install/uninstall scripts for a Windows Startup shortcut.
+
+**Linux/Bazzite:** Run `./run.sh` from a terminal, or build a self-contained binary with `./build-release-linux.sh` and launch it directly. See the [Linux / Bazzite](#linux--bazzite) section below.
 
 ## AI Disclosure
 
@@ -21,7 +23,7 @@ This viewer was coded with help from OpenAI Codex. The project is human-directed
 
 ## Run
 
-### Release build
+### Windows — release build
 
 1. Download and extract the release zip.
 2. Double-click `SteamControllerGamepadViewer.exe`.
@@ -38,7 +40,7 @@ The standard v1 release zip only needs these files:
 - `LICENSE`
 - `THIRD_PARTY_NOTICES.md`
 
-### From source
+### Windows — from source
 
 Use Command Prompt or double-click:
 
@@ -47,6 +49,93 @@ Run-SteamControllerViewer.cmd
 ```
 
 That script uses `dotnet run` and avoids PowerShell execution-policy issues. The PowerShell script is kept only as a developer convenience.
+
+### Linux / Bazzite
+
+#### Prerequisites
+
+- [.NET 8 SDK or Runtime](https://dotnet.microsoft.com/download/dotnet/8.0)
+- SDL3 (`libSDL3.so.0`) — see options below
+
+**Install SDL3 on Bazzite / Fedora-based systems:**
+
+```bash
+# Bazzite uses rpm-ostree for system packages (changes apply after reboot):
+sudo rpm-ostree install SDL3
+
+# Or install the Flatpak SDL3 extension if you prefer not to rebase:
+# SDL3 may also already be present via the Steam Runtime — the app checks
+# ~/.local/share/Steam/ubuntu12_32/steam-runtime/ automatically.
+```
+
+**Install SDL3 on Debian/Ubuntu-based systems:**
+
+```bash
+sudo apt install libsdl3-dev
+```
+
+#### Run from source (development)
+
+Requires .NET 8 SDK.
+
+```bash
+./run.sh
+```
+
+#### Build a self-contained binary (no .NET needed at runtime)
+
+```bash
+./build-release-linux.sh          # defaults to linux-x64
+./build-release-linux.sh linux-arm64  # for ARM64 (e.g. Raspberry Pi)
+```
+
+The binary is placed in `artifacts/release/linux-x64/`. Run it directly:
+
+```bash
+./artifacts/release/linux-x64/SteamControllerGamepadViewer
+```
+
+Then open `http://127.0.0.1:31337` in a browser or add it as an OBS browser source.
+
+#### SDL3 path override
+
+The app probes common system locations automatically. If SDL3 is installed somewhere non-standard, point to it explicitly:
+
+```bash
+# Environment variable (persists for the session):
+SDL3_PATH=/path/to/libSDL3.so.0 ./SteamControllerGamepadViewer
+
+# Command-line flag:
+./SteamControllerGamepadViewer --sdl3 /path/to/libSDL3.so.0
+```
+
+#### Auto-start on login (systemd user service)
+
+Create `~/.config/systemd/user/steam-controller-viewer.service`:
+
+```ini
+[Unit]
+Description=Steam Controller Gamepad Viewer
+After=network.target
+
+[Service]
+ExecStart=/path/to/SteamControllerGamepadViewer
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+```
+
+Then enable it:
+
+```bash
+systemctl --user enable --now steam-controller-viewer.service
+```
+
+#### Linux notes
+
+- The Windows HID touchpad service is automatically skipped on Linux; touchpad data comes from SDL3 instead.
+- Raw HID device access may require your user to be in the `input` group or a udev rule granting access to `/dev/hidraw*`. If the controller is not detected, try: `sudo usermod -aG input $USER` (log out and back in after).
 
 ## OBS Setup
 
@@ -79,11 +168,13 @@ Supported inputs:
 - Left and right trackpad touch position, click pressure, and live finger position.
 - Four rear grip buttons.
 
-SDL3 is loaded from the app folder first, then from the default Steam install folders. You can override the path with `--sdl3 "C:\path\to\SDL3.dll"` or the `SDL3_PATH` environment variable.
+SDL3 is loaded from the app folder first, then from default Steam install folders and common system library paths. You can override the path with `--sdl3 "/path/to/libSDL3.so.0"` (or `SDL3.dll` on Windows) or the `SDL3_PATH` environment variable.
 
 If SDL3 cannot open the controller after a firmware update, the app falls back to fresh Valve HID reports when they are available. That keeps the overlay connected for Steam Controller firmware/device-id changes that still expose the same raw HID report shape.
 
-## Building Release Zips
+## Building Releases
+
+### Windows
 
 From a source checkout:
 
@@ -97,6 +188,15 @@ Release zips are created under `artifacts\release`:
 - `Steam Controller Viewer v1.0.0 win-x64 (start with Windows).zip`
 
 Upload those zips to GitHub Releases. Do not upload the normal `publish` folder unless you specifically want a framework-dependent developer build.
+
+### Linux
+
+```bash
+./build-release-linux.sh          # linux-x64 (default)
+./build-release-linux.sh linux-arm64
+```
+
+The self-contained single-file binary is placed under `artifacts/release/<rid>/`.
 
 ## License And Notices
 
