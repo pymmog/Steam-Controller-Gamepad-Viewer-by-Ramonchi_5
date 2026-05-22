@@ -89,12 +89,19 @@ Requires .NET 8 SDK.
 ./build-release-linux.sh linux-arm64  # for ARM64 (e.g. Raspberry Pi)
 ```
 
-The binary is placed in `artifacts/release/linux-x64/`. **Install it to a standard location before running** — systemd and some desktop environments generate service/scope names from the binary path, and long or special-character paths will cause an "Invalid unit name" error:
+The binary is placed in `artifacts/release/linux-x64/`. **Install it to a standard location before running** — systemd and some desktop environments generate service/scope names from the binary path, and long or special-character paths will cause an "Invalid unit name" error.
+
+Use the install script (builds if needed, then offers service and udev setup):
 
 ```bash
-mkdir -p ~/.local/bin
-cp artifacts/release/linux-x64/SteamControllerGamepadViewer ~/.local/bin/
-~/.local/bin/SteamControllerGamepadViewer
+./install-linux.sh          # linux-x64 (default)
+./install-linux.sh linux-arm64
+```
+
+To remove everything the installer placed:
+
+```bash
+./uninstall-linux.sh
 ```
 
 Then open `http://127.0.0.1:31337` in a browser or add it as an OBS browser source.
@@ -111,45 +118,16 @@ SDL3_PATH=/path/to/libSDL3.so.0 ~/.local/bin/SteamControllerGamepadViewer
 ~/.local/bin/SteamControllerGamepadViewer --sdl3 /path/to/libSDL3.so.0
 ```
 
-#### Auto-start on login (systemd user service)
-
-Install the binary to `~/.local/bin/` first (see above), then create `~/.config/systemd/user/steam-controller-viewer.service`:
-
-```ini
-[Unit]
-Description=Steam Controller Gamepad Viewer
-After=graphical-session.target
-
-[Service]
-ExecStart=%h/.local/bin/SteamControllerGamepadViewer
-Restart=on-failure
-
-[Install]
-WantedBy=default.target
-```
-
-Then enable it:
-
-```bash
-systemctl --user enable --now steam-controller-viewer.service
-```
-
-> **Note:** Running the binary directly from a long source-checkout path (e.g. a directory with the branch name in it) will produce an `Invalid unit name` error because systemd auto-generates a scope name from the full path. Always install to `~/.local/bin/` or another short path before using systemd or auto-start.
+> **Note:** Running the binary directly from a long source-checkout path (e.g. a directory with the branch name in it) will produce an `Invalid unit name` error because systemd auto-generates a scope name from the full path. Always use `./install-linux.sh` or copy manually to `~/.local/bin/` before using auto-start.
 
 #### Linux notes
 
 On Linux, touchpad data is read directly from the raw HID device (`/dev/hidraw*`), the same way the Windows version reads from `hid.dll`. This requires read access to the hidraw device.
 
-**If the trackpads show no input**, the app cannot open the HID device. Fix it with a udev rule (recommended) or by adding your user to the `input` group:
+**If the trackpads show no input**, the app cannot open the HID device. Re-run `./install-linux.sh` and choose `y` when prompted about the udev rule, or add your user to the `input` group manually:
 
 ```bash
-# Option A — udev rule (no group change needed, takes effect immediately after replug):
-echo 'SUBSYSTEM=="hidraw", ATTRS{idVendor}=="28de", MODE="0660", GROUP="input"' \
-  | sudo tee /etc/udev/rules.d/70-steam-controller.rules
-sudo udevadm control --reload-rules && sudo udevadm trigger
-
-# Option B — add user to input group (requires log out/in):
-sudo usermod -aG input $USER
+sudo usermod -aG input $USER   # log out and back in after
 ```
 
 On Bazzite, Steam typically holds the controller and the app reads alongside it; Steam being open is sufficient in most cases.
