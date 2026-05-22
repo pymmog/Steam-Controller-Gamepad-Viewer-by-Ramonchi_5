@@ -191,12 +191,12 @@ function statusText(state) {
     return `${friendlyName(state.name)} connected (${vendor}:${product})`;
   }
 
-  return state.name || state.status || "Waiting for Steam Controller";
+  return state.name || state.status || "Waiting for controller";
 }
 
 function friendlyName(name) {
   if (!name) {
-    return "Steam Controller";
+    return "Controller";
   }
 
   return name.replace(/\s*\(.*?\)\s*$/, "").trim();
