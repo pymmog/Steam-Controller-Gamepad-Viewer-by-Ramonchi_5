@@ -81,7 +81,7 @@ internal sealed class SdlControllerService : BackgroundService
         }
         catch (DllNotFoundException ex)
         {
-            PublishUnavailable($"SDL3.dll was not found. {ex.Message}");
+            PublishUnavailable($"SDL3 library was not found. {ex.Message}");
         }
         catch (EntryPointNotFoundException ex)
         {

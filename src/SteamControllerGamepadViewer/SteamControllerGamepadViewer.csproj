@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>SteamControllerGamepadViewer</AssemblyName>
     <RootNamespace>SteamControllerGamepadViewer</RootNamespace>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\**\*">

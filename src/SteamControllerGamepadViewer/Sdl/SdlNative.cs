@@ -41,7 +41,29 @@ internal static class SdlNative
             return NativeLibrary.Load(_dllPath);
         }
 
+        foreach (var name in GetPlatformFallbackNames())
+        {
+            if (NativeLibrary.TryLoad(name, out var handle))
+            {
+                return handle;
+            }
+        }
+
         return IntPtr.Zero;
+    }
+
+    private static IEnumerable<string> GetPlatformFallbackNames()
+    {
+        if (OperatingSystem.IsLinux())
+        {
+            yield return "libSDL3.so.0";
+            yield return "libSDL3.so";
+        }
+        else if (OperatingSystem.IsMacOS())
+        {
+            yield return "libSDL3.0.dylib";
+            yield return "libSDL3.dylib";
+        }
     }
 
     private static string? FindConfiguredPath(IReadOnlyList<string> args)
@@ -69,13 +91,44 @@ internal static class SdlNative
 
     private static string? FindDefaultPath()
     {
-        var candidates = new[]
+        string[] candidates;
+
+        if (OperatingSystem.IsLinux())
         {
-            Path.Combine(AppContext.BaseDirectory, "SDL3.dll"),
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "SDL3.dll"),
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Steam", "SDL3.dll"),
-            Path.Combine(Environment.CurrentDirectory, "SDL3.dll"),
-        };
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            candidates =
+            [
+                Path.Combine(AppContext.BaseDirectory, "libSDL3.so.0"),
+                Path.Combine(AppContext.BaseDirectory, "libSDL3.so"),
+                Path.Combine(Environment.CurrentDirectory, "libSDL3.so.0"),
+                Path.Combine(Environment.CurrentDirectory, "libSDL3.so"),
+                Path.Combine(home, ".local/share/Steam/ubuntu12_32/steam-runtime/libSDL3.so.0"),
+                "/usr/lib/x86_64-linux-gnu/libSDL3.so.0",
+                "/usr/lib64/libSDL3.so.0",
+                "/usr/lib/libSDL3.so.0",
+                "/usr/local/lib/libSDL3.so.0",
+            ];
+        }
+        else if (OperatingSystem.IsMacOS())
+        {
+            candidates =
+            [
+                Path.Combine(AppContext.BaseDirectory, "libSDL3.dylib"),
+                Path.Combine(Environment.CurrentDirectory, "libSDL3.dylib"),
+                "/usr/local/lib/libSDL3.dylib",
+                "/opt/homebrew/lib/libSDL3.dylib",
+            ];
+        }
+        else
+        {
+            candidates =
+            [
+                Path.Combine(AppContext.BaseDirectory, "SDL3.dll"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "SDL3.dll"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Steam", "SDL3.dll"),
+                Path.Combine(Environment.CurrentDirectory, "SDL3.dll"),
+            ];
+        }
 
         return candidates.FirstOrDefault(File.Exists);
     }
