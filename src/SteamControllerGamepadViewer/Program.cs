@@ -24,7 +24,10 @@ builder.WebHost.UseUrls(builder.Configuration["urls"] ?? builder.Configuration["
 
 builder.Services.AddSingleton<ControllerStateHub>();
 builder.Services.AddSingleton<SteamHidState>();
-builder.Services.AddHostedService<SteamHidTouchpadService>();
+if (OperatingSystem.IsWindows())
+    builder.Services.AddHostedService<SteamHidTouchpadService>();
+else if (OperatingSystem.IsLinux())
+    builder.Services.AddHostedService<LinuxHidTouchpadService>();
 builder.Services.AddHostedService<SdlControllerService>();
 
 var app = builder.Build();

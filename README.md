@@ -138,8 +138,21 @@ systemctl --user enable --now steam-controller-viewer.service
 
 #### Linux notes
 
-- The Windows HID touchpad service is automatically skipped on Linux; touchpad data comes from SDL3 instead.
-- Raw HID device access may require your user to be in the `input` group or a udev rule granting access to `/dev/hidraw*`. If the controller is not detected, try: `sudo usermod -aG input $USER` (log out and back in after).
+On Linux, touchpad data is read directly from the raw HID device (`/dev/hidraw*`), the same way the Windows version reads from `hid.dll`. This requires read access to the hidraw device.
+
+**If the trackpads show no input**, the app cannot open the HID device. Fix it with a udev rule (recommended) or by adding your user to the `input` group:
+
+```bash
+# Option A — udev rule (no group change needed, takes effect immediately after replug):
+echo 'SUBSYSTEM=="hidraw", ATTRS{idVendor}=="28de", MODE="0660", GROUP="input"' \
+  | sudo tee /etc/udev/rules.d/70-steam-controller.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+
+# Option B — add user to input group (requires log out/in):
+sudo usermod -aG input $USER
+```
+
+On Bazzite, Steam typically holds the controller and the app reads alongside it; Steam being open is sufficient in most cases.
 
 ## OBS Setup
 
