@@ -82,17 +82,19 @@ Requires .NET 8 SDK.
 ./run.sh
 ```
 
-#### Build a self-contained binary (no .NET needed at runtime)
+#### Build and install a self-contained binary (no .NET needed at runtime)
 
 ```bash
 ./build-release-linux.sh          # defaults to linux-x64
 ./build-release-linux.sh linux-arm64  # for ARM64 (e.g. Raspberry Pi)
 ```
 
-The binary is placed in `artifacts/release/linux-x64/`. Run it directly:
+The binary is placed in `artifacts/release/linux-x64/`. **Install it to a standard location before running** — systemd and some desktop environments generate service/scope names from the binary path, and long or special-character paths will cause an "Invalid unit name" error:
 
 ```bash
-./artifacts/release/linux-x64/SteamControllerGamepadViewer
+mkdir -p ~/.local/bin
+cp artifacts/release/linux-x64/SteamControllerGamepadViewer ~/.local/bin/
+~/.local/bin/SteamControllerGamepadViewer
 ```
 
 Then open `http://127.0.0.1:31337` in a browser or add it as an OBS browser source.
@@ -103,23 +105,23 @@ The app probes common system locations automatically. If SDL3 is installed somew
 
 ```bash
 # Environment variable (persists for the session):
-SDL3_PATH=/path/to/libSDL3.so.0 ./SteamControllerGamepadViewer
+SDL3_PATH=/path/to/libSDL3.so.0 ~/.local/bin/SteamControllerGamepadViewer
 
 # Command-line flag:
-./SteamControllerGamepadViewer --sdl3 /path/to/libSDL3.so.0
+~/.local/bin/SteamControllerGamepadViewer --sdl3 /path/to/libSDL3.so.0
 ```
 
 #### Auto-start on login (systemd user service)
 
-Create `~/.config/systemd/user/steam-controller-viewer.service`:
+Install the binary to `~/.local/bin/` first (see above), then create `~/.config/systemd/user/steam-controller-viewer.service`:
 
 ```ini
 [Unit]
 Description=Steam Controller Gamepad Viewer
-After=network.target
+After=graphical-session.target
 
 [Service]
-ExecStart=/path/to/SteamControllerGamepadViewer
+ExecStart=%h/.local/bin/SteamControllerGamepadViewer
 Restart=on-failure
 
 [Install]
@@ -131,6 +133,8 @@ Then enable it:
 ```bash
 systemctl --user enable --now steam-controller-viewer.service
 ```
+
+> **Note:** Running the binary directly from a long source-checkout path (e.g. a directory with the branch name in it) will produce an `Invalid unit name` error because systemd auto-generates a scope name from the full path. Always install to `~/.local/bin/` or another short path before using systemd or auto-start.
 
 #### Linux notes
 
